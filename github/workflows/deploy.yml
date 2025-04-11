@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "vite.config.ts"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🔍 Check for changes in src or vite.config.ts
+        id: changes
+        run: |
+          git diff --exit-code src/ vite.config.ts || echo "Changes detected"
+
+      - name: 🛠 Build project
+        if: steps.changes.outputs.diff == 'Changes detected'
+        run: npm run build
+
+      - name: 🚀 Deploy to GitHub Pages
+        if: steps.changes.outputs.diff == 'Changes detected'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
