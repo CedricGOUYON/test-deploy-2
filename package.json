@@ -2,7 +2,7 @@
   "name": "test-deploy-2",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://cedricgouyon.github.io/test-deploy-2",
+  "homepage": "https://cedricgouyon.github.io/test-deploy-2/",
   "type": "module",
   "scripts": {
     "dev": "vite",
